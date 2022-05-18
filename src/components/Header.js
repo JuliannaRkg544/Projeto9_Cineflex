@@ -8,7 +8,7 @@ export default function Header() {
 const Head = styled.div` 
     position: fixed;
     top: 0;
-    width:100%;
+    width:100vw;
     height: 67px;
     background-color: #C3CFD9 ;
     display: flex;

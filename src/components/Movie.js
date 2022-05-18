@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
+import Container from "./Container";
 
-export default function Movie(){
+export default function Movie() {
     return (
-        <Link to={"/seats"}>  <h1>Movie screen</h1> </Link>
-  
+        <Container>
+            <p>Selecione o horário</p>
+        </Container>
+
     )
 }
