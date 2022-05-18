@@ -13,7 +13,7 @@ export default function App() {
             <Header />
             <Routes>
                 <Route path="/" element={<MovieList />} ></Route>
-                <Route path="/movie" element={<Movie />}></Route>
+                <Route path="/movie/:idMovie" element={<Movie />}></Route>
                 <Route path="/seats" element={<MovieSeats />}></Route>
                 <Route path="/confirmation" element={<Confirmation />}></Route>
             </Routes>
