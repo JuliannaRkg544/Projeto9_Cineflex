@@ -30,7 +30,7 @@ export default function Movie() {
                 return (
                     <Info key={index}>
                         <span>{session.weekday} - {session.date}</span>
-                        {session.showtimes.map((s, index) => { return <Link to={`/seats`} key={index} ><button>{s.name}</button> </Link> } )}
+                        {session.showtimes.map((s, index) => { return <Link to={`/seats/${s.id}`} key={index} ><button>{s.name}</button> </Link> } )}
                     </Info>)
             })}
         <Footer title={movie.title} posterURL={movie.posterURL}/>
@@ -60,7 +60,7 @@ button{
     width:83px;
     height:43px;
     border-radius: 3px;
-    margin: 0 10px;
+    margin: 2px 10px;
 }
 
 `

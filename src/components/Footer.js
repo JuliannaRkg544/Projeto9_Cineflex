@@ -3,7 +3,7 @@ import styled from "styled-components"
 export default function Footer({title,posterURL}){
     return (
         <Style>
-        <img id="footer-img" src={posterURL}/>
+        <img src={posterURL}/>
         <span>{title}</span>
         </Style>
     )
@@ -21,9 +21,9 @@ align-items: center;
 position: fixed;
 bottom: 0;
 
-#footer-img{
+img{
     width: 42px;
-    heigth: 72px;
+    height: 72px;
     margin:0 10px;
 }
 
