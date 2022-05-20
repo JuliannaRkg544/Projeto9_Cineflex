@@ -1,28 +1,51 @@
 import axios from "axios";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Container from "./Container";
 import styled from "styled-components"
 import Footer from "./Footer";
 
-export default function MovieSeats() {
+const URL_POST = `https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many`
+
+export default function MovieSeats(props) {
+    const { idSeats } = useParams();
+    const [getSeatsURL, setGetSeatsURL] = useState(`https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${idSeats}/seats`) 
+    const {buyTickets} = props
     const [seats, setSeats] = useState([]);
     const [name, setName] = useState("");
     const [cpf, setCpf] = useState("");
     const [info, setInfo] = useState([]);
-    const [selected,setSelected] = useState(false)
-    const { idSeats } = useParams();
-    const URL = `https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${idSeats}/seats`
+    const [selected,setSelected] = useState([])
+    const navigate = useNavigate()
+
+    
+   
     useEffect(() => {
-        axios.get(URL).then((response) => {
+        axios.get(getSeatsURL).then((response) => {
             const { data } = response
             setSeats([...data.seats])
             setInfo(data)
-        }).catch(error => { console.log(error.response) })
+        }).catch(error => {console.log(error.response) })
     }, [])
-    function buyTickets() {
-        <></>
+    
+    function saveTickets(event) {
+        event.preventDefault();
+        const body = {
+            ids: selected,
+            name: name,
+            cpf: cpf
+        }
+        console.log(body)
+        axios.post(URL_POST, body).then((response=>{buyTickets({
+            movie: info.movie.title,
+            date: info.day.date,
+            time: info.name,
+            seats: selected
+        })
+        navigate("/confirmation")
+    } )).catch((e =>{console.log(e.response); alert("deu ruim")}))   
     }
+ 
     function selectSeat(seatNum){
         let newSeat = seats.map((value,index)=>{
             if (index === parseInt(seatNum)-1){
@@ -37,6 +60,8 @@ export default function MovieSeats() {
             }
         }
         )
+        setSelected(prevState =>[...prevState,seatNum] )
+        
         setSeats([...newSeat])
     }
     function disselectSeat(seatNum){
@@ -44,7 +69,7 @@ export default function MovieSeats() {
             if (index === parseInt(seatNum)-1){
                 return{
                     ...value,
-                    isAvailable:true,
+                    isAvailable: true,
                 }
             } else {
                 return{
@@ -68,7 +93,7 @@ export default function MovieSeats() {
                 })}
                 {/* criar um component para os assentos Seats */}
 
-                <form onSubmit={() => buyTickets()}>
+                <form onSubmit={saveTickets}>
 
                     <label for="name">Nome do comprador:</label>
                     <input
@@ -88,12 +113,12 @@ export default function MovieSeats() {
                     ></input>
 
                     <div className="reserva">
-                        <Link to={`/confirmation`}><button type="submit">Reservar assento(s)</button> </Link>
+                        <button type="submit">Reservar assento(s)</button> 
                     </div>
 
                 </form>
             </Style>
-         {/* <Footer posterURL={info.movie.posterURL} title={info.movie.title} />  */}
+         {/* <Footer posterURL={info.movie.posterURL} title={info.movie.title} />   */}
         </Container>
     )
 }
