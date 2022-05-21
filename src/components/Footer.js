@@ -3,8 +3,10 @@ import styled from "styled-components"
 export default function Footer({title,posterURL}){
     return (
         <Style>
-        <img src={posterURL}/>
-        <span>{title}</span>
+         <img src={posterURL}/>
+        <span>{title}</span> 
+        {/* <span>{date}</span>
+        <span>{weekday}</span> */}
         </Style>
     )
 }

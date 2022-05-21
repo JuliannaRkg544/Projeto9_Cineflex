@@ -40,7 +40,9 @@ export default function MovieSeats(props) {
             movie: info.movie.title,
             date: info.day.date,
             time: info.name,
-            seats: selected
+            seats: selected,
+            buyer: name,
+            cpf: cpf
         })
         navigate("/confirmation")
     } )).catch((e =>{console.log(e.response); alert("deu ruim")}))   
@@ -61,7 +63,6 @@ export default function MovieSeats(props) {
         }
         )
         setSelected(prevState =>[...prevState,seatNum] )
-        
         setSeats([...newSeat])
     }
     function disselectSeat(seatNum){
@@ -77,7 +78,8 @@ export default function MovieSeats(props) {
                 }
             }
         })
-        setSeats([...newSeat])
+        //selected.delete(seatNum)
+        setSeats([...seats.delete(seatNum)])
     }
     return (
         <Container>
@@ -118,7 +120,7 @@ export default function MovieSeats(props) {
 
                 </form>
             </Style>
-         {/* <Footer posterURL={info.movie.posterURL} title={info.movie.title} />   */}
+         {/* <Footer weekday={info.day.weekday} date={info.day.date}  />  */}
         </Container>
     )
 }
