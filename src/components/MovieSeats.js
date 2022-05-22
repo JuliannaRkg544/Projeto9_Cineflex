@@ -25,6 +25,7 @@ export default function MovieSeats(props) {
             const { data } = response
             setSeats([...data.seats])
             setInfo(data)
+            console.log("data movie ",data.movie)
         }).catch(error => {console.log(error.response) })
     }, [])
     
@@ -78,8 +79,9 @@ export default function MovieSeats(props) {
                 }
             }
         })
-        //selected.delete(seatNum)
-        setSeats([...seats.delete(seatNum)])
+        let seatOld = selected.filter((item)=> item !==seatNum )
+        setSelected(seatOld)
+       setSeats([...newSeat]);
     }
     return (
         <Container>
@@ -87,17 +89,17 @@ export default function MovieSeats(props) {
             <Style>
                 {seats.map((seat, index) => {
                     if (seat.isAvailable === true) {
-                        return <button className="available" onClick={(()=>{selectSeat(seat.name)})}>{seat.name}</button>
+                        return <button className="available" key={index} onClick={(()=>{selectSeat(seat.name)})}>{seat.name}</button>
                     } else if (seat.isAvailable === "selected"){
-                        return <button className="selected" onClick={(()=>{disselectSeat(seat.name)})}>{seat.name}</button>
+                        return <button className="selected" key={index} onClick={(()=>{disselectSeat(seat.name)})}>{seat.name}</button>
                     }
-                    else return <button className="unavailable" onClick={(()=>alert("Assento indisponível!!"))} >{seat.name}</button> 
+                    else return <button className="unavailable" key={index} onClick={(()=>alert("Assento indisponível!!"))} >{seat.name}</button> 
                 })}
                 {/* criar um component para os assentos Seats */}
 
                 <form onSubmit={saveTickets}>
 
-                    <label for="name">Nome do comprador:</label>
+                    <label>Nome do comprador:</label>
                     <input
                         required
                         type="text"
@@ -105,7 +107,7 @@ export default function MovieSeats(props) {
                         minLength="3"
                         onChange={((event) => { setName(event.target.value) })}
                     ></input>
-                    <label for="cpf">CPF do comprador:</label>
+                    <label>CPF do comprador:</label>
                     <input
                         required
                         type="text"
@@ -120,7 +122,13 @@ export default function MovieSeats(props) {
 
                 </form>
             </Style>
-         {/* <Footer weekday={info.day.weekday} date={info.day.date}  />  */}
+            
+              {/* <Footer   
+              weekday = {info.day.weekday}
+              date = {info.name}
+              posterURL = {info.movie.posterURL}
+              title = {info.movie.title}
+              />   */}
         </Container>
     )
 }

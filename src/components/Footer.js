@@ -1,12 +1,13 @@
 import styled from "styled-components"
 
-export default function Footer({title,posterURL}){
+export default function Footer({title,posterURL,weekday,date}){
     return (
         <Style>
          <img src={posterURL}/>
+         <div>
         <span>{title}</span> 
-        {/* <span>{date}</span>
-        <span>{weekday}</span> */}
+        <span>{date}  {weekday}</span>
+         </div>
         </Style>
     )
 }
@@ -22,6 +23,11 @@ justify-content: start;
 align-items: center;
 position: fixed;
 bottom: 0;
+
+div{
+    display: flex;
+    flex-direction: column;
+}
 
 img{
     width: 42px;

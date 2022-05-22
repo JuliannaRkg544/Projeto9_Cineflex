@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import styled from "styled-components"
 import Container from "./Container";
+import Loading from "./Loading"
 
 export default function MovieList() {
     const URL = `https://mock-api.driven.com.br/api/v5/cineflex/movies`
@@ -31,7 +32,7 @@ export default function MovieList() {
             </MovieContainer>
             </Container>
         )
-    } else { return <p>carregando</p> }
+    } else {return <Loading/>  }
 
 }
 const MovieContainer = styled.div `
@@ -44,7 +45,7 @@ const MovieContainer = styled.div `
 
 img{
     width: 129px;
-    heigth: 193px;
+    height: 193px;
 }
 
 .single-movie{
