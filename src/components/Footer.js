@@ -36,8 +36,9 @@ img{
 }
 
 span{
-    font-size:  26px ;
+    font-size:  22px ;
     color: #293845;
+    margin: 3px 0;
 }
 
 `

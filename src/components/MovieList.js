@@ -1,19 +1,22 @@
 import axios from "axios";
+
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+
 import styled from "styled-components"
 import Container from "./Container";
+
 import Loading from "./Loading"
 
+
 export default function MovieList() {
-    const URL = `https://mock-api.driven.com.br/api/v5/cineflex/movies`
+    const [URL_GET_MOVIES, setURL_GET_MOVIES] = useState(`https://mock-api.driven.com.br/api/v5/cineflex/movies`) 
     const [movieList, setMovielist] = useState([])
 
     useEffect(() => {
-        const promise = axios.get(URL)
+        const promise = axios.get(URL_GET_MOVIES)
         promise.then((response) => {
             setMovielist([...response.data])
-            console.log(typeof response.data)
         })
         promise.catch(err => {console.log("deu ruim na primeira requisição",err.response )})
     }, [])

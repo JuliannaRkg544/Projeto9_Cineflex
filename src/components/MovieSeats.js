@@ -1,8 +1,11 @@
 import axios from "axios";
+
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Container from "./Container";
+
 import styled from "styled-components"
+import Container from "./Container";
+
 import Footer from "./Footer"
 import Loading from "./Loading";
 
@@ -12,7 +15,7 @@ export default function MovieSeats(props) {
     const { idSeats } = useParams();
     const { buyTickets } = props
     
-    const [getSeatsURL, setGetSeatsURL] = useState(`https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${idSeats}/seats`)
+    const [URL_GET_SEATS, setURL_GET_SEATS] = useState(`https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${idSeats}/seats`)
 
     const [seats, setSeats] = useState([]);
     const [name, setName] = useState("");
@@ -24,11 +27,10 @@ export default function MovieSeats(props) {
 
 
     useEffect(() => {
-        axios.get(getSeatsURL).then((response) => {
+        axios.get(URL_GET_SEATS).then((response) => {
             const { data } = response
             setSeats([...data.seats])
             setInfo(data)
-            console.log("data movie ", data.movie)
         }).catch(error => { console.log(error.response) })
     }, [])
 
@@ -39,7 +41,6 @@ export default function MovieSeats(props) {
             name: name,
             cpf: cpf
         }
-        console.log(body)
         axios.post(URL_POST, body).then((response => {
             buyTickets({
                 movie: info.movie.title,
@@ -150,48 +151,9 @@ export default function MovieSeats(props) {
 
         </Container>
 
-    )  } else return <Loading/>
+    ) } else return <Loading/>
 
-    // function footer({title,posterURL,weekday,date}) {
-    //     <StyledFooter>
-
-    //         <img src={posterURL} />
-    //         <div>
-    //             <span>{title}</span>
-    //             <span>{date}  {weekday}</span>
-    //         </div>
-    //     </StyledFooter>
-    // }
 }
-const StyledFooter = styled.div` 
-display: flex;
-background-color: #DFE6ED;
-border: 1px #9EADBA;
-box-shadow: 0 2px 4px 2px #9EADBA;
-height: 100px;
-width: 100%;
-justify-content: start;
-align-items: center;
-position: fixed;
-bottom: 0;
-
-div{
-    display: flex;
-    flex-direction: column;
-}
-
-img{
-    width: 42px;
-    height: 72px;
-    margin: 0 10px;
-}
-
-span{
-    font-size: 26px;
-    color: #293845;
-}
-
-`
 
 const Style = styled.div`
     display:flex;
@@ -246,11 +208,18 @@ form{
     height: 28px;
 }
 input::placeholder{
-    width: 327px;
-    height: 51px;
     font-size: 18px;
     font-style: italic;
     color: #AFAFAF;
+}
+input{
+    width: 327px;
+    height: 51px;
+    border: 1px solid #d4d4d4;
+}
+label{
+    color: #293845;
+    font-size: 18px;
 }
 
 .seats-footer{
@@ -260,7 +229,6 @@ input::placeholder{
     justify-content: space-around;
 
 }
-
 
 .seats-footer button{
     border: 1px solid #808F9D;
@@ -285,3 +253,32 @@ input::placeholder{
 
 `
 
+
+const StyledFooter = styled.div` 
+display: flex;
+background-color: #DFE6ED;
+border: 1px #9EADBA;
+box-shadow: 0 2px 4px 2px #9EADBA;
+height: 100px;
+width: 100%;
+justify-content: start;
+align-items: center;
+position: fixed;
+bottom: 0;
+
+div{
+    display: flex;
+    flex-direction: column;
+}
+
+img{
+    width: 42px;
+    height: 72px;
+    margin: 0 10px;
+}
+
+span{
+    font-size: 26px;
+    color: #293845;
+}
+`

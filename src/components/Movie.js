@@ -1,25 +1,28 @@
+import axios from "axios";
+
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
-import axios from "axios";
 import { useState } from "react";
-import Footer from "./Footer";
+
 import styled from "styled-components"
 import Container from "./Container";
+
+import Footer from "./Footer";
 import Loading from "./Loading";
 
 export default function Movie() {
     const { idMovie } = useParams()
+    
+    const [ URL_GET_SESSION,setURL_GET_SESSION]  = useState (`https://mock-api.driven.com.br/api/v5/cineflex/movies/${idMovie}/showtimes`)
     const [session, setSession] = useState([])
     const [movie, setMovie] = useState([])  // no lugar desse estado poderia n fazer o destruct de 
     //response.data.day, apenas de response.data, mas seri anecessário fazer tres maps no retorno
-    const URL = (`https://mock-api.driven.com.br/api/v5/cineflex/movies/${idMovie}/showtimes`)
     useEffect(() => {
-        axios.get(URL).then((response) => {
+        axios.get(URL_GET_SESSION).then((response) => {
             const { data } = response;
             setSession([...data.days])
             setMovie(data)
-            console.log(data)
         }
         ).catch(error => { console.log(error.response) })
     }, [])

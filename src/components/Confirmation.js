@@ -9,14 +9,12 @@ const navigate = useNavigate()
             <div className="info">
                 <p>Filme e sessão</p>
                 <span> {buy.movie} </span>
-                <span> {buy.time} - </span>
-                {/* hora e dia */}
+                <span>{buy.date} {buy.time} </span>
             </div>
 
             <div className="info" >
                 <p>Ingressos</p>
                 {buy.seats.map((seat)=>{return  <span>Assento {seat} </span>})}
-                {/* assantos quando for mais de 1 */}
             </div>
 
             <div className="info" >
@@ -41,7 +39,8 @@ button{
     border: none;
     background-color: #E8833A;
     width: 255px;
-    height: 60;
+    height: 42px;
+    margin: 15px 0;
     border-radius: 3px;
     color: #fff;
 }
