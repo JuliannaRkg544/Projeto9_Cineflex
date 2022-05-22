@@ -3,32 +3,35 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Container from "./Container";
 import styled from "styled-components"
-import Footer from "./Footer";
+import Footer from "./Footer"
+import Loading from "./Loading";
 
 const URL_POST = `https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many`
 
 export default function MovieSeats(props) {
     const { idSeats } = useParams();
-    const [getSeatsURL, setGetSeatsURL] = useState(`https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${idSeats}/seats`) 
-    const {buyTickets} = props
+    const { buyTickets } = props
+    
+    const [getSeatsURL, setGetSeatsURL] = useState(`https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${idSeats}/seats`)
+
     const [seats, setSeats] = useState([]);
     const [name, setName] = useState("");
     const [cpf, setCpf] = useState("");
-    const [info, setInfo] = useState([]);
-    const [selected,setSelected] = useState([])
+    const [info, setInfo] = useState(null);
+    const [selected, setSelected] = useState([])
+
     const navigate = useNavigate()
 
-    
-   
+
     useEffect(() => {
         axios.get(getSeatsURL).then((response) => {
             const { data } = response
             setSeats([...data.seats])
             setInfo(data)
-            console.log("data movie ",data.movie)
-        }).catch(error => {console.log(error.response) })
+            console.log("data movie ", data.movie)
+        }).catch(error => { console.log(error.response) })
     }, [])
-    
+
     function saveTickets(event) {
         event.preventDefault();
         const body = {
@@ -37,24 +40,25 @@ export default function MovieSeats(props) {
             cpf: cpf
         }
         console.log(body)
-        axios.post(URL_POST, body).then((response=>{buyTickets({
-            movie: info.movie.title,
-            date: info.day.date,
-            time: info.name,
-            seats: selected,
-            buyer: name,
-            cpf: cpf
-        })
-        navigate("/confirmation")
-    } )).catch((e =>{console.log(e.response); alert("deu ruim")}))   
+        axios.post(URL_POST, body).then((response => {
+            buyTickets({
+                movie: info.movie.title,
+                date: info.day.date,
+                time: info.name,
+                seats: selected,
+                buyer: name,
+                cpf: cpf
+            })
+            navigate("/confirmation")
+        })).catch((e => { console.log(e.response); alert("deu ruim") }))
     }
- 
-    function selectSeat(seatNum){
-        let newSeat = seats.map((value,index)=>{
-            if (index === parseInt(seatNum)-1){
-                return{ 
+
+    function selectSeat(seatNum) {
+        let newSeat = seats.map((value, index) => {
+            if (index === parseInt(seatNum) - 1) {
+                return {
                     ...value,
-                    isAvailable:"selected",
+                    isAvailable: "selected",
                 }
             } else {
                 return {
@@ -63,50 +67,54 @@ export default function MovieSeats(props) {
             }
         }
         )
-        setSelected(prevState =>[...prevState,seatNum] )
+        setSelected(prevState => [...prevState, seatNum])
         setSeats([...newSeat])
     }
-    function disselectSeat(seatNum){
-        let newSeat = seats.map((value,index)=>{
-            if (index === parseInt(seatNum)-1){
-                return{
+
+    function disselectSeat(seatNum) {
+        let newSeat = seats.map((value, index) => {
+            if (index === parseInt(seatNum) - 1) {
+                return {
                     ...value,
                     isAvailable: true,
                 }
             } else {
-                return{
+                return {
                     ...value,
                 }
             }
         })
-        let seatOld = selected.filter((item)=> item !==seatNum )
-        setSelected(seatOld)
-       setSeats([...newSeat]);
+        let oldSeat = selected.filter((item) => item !== seatNum)
+        setSelected(oldSeat)
+        setSeats([...newSeat]);
     }
-    return (
+
+   if(seats.length>0){
+
+  return (
         <Container>
             <p>Selecione o(s) assento(s)</p>
             <Style>
                 {seats.map((seat, index) => {
                     if (seat.isAvailable === true) {
-                        return <button className="available" key={index} onClick={(()=>{selectSeat(seat.name)})}>{seat.name}</button>
-                    } else if (seat.isAvailable === "selected"){
-                        return <button className="selected" key={index} onClick={(()=>{disselectSeat(seat.name)})}>{seat.name}</button>
+                        return <button className="available" key={index} onClick={(() => { selectSeat(seat.name) })}>{seat.name}</button>
+                    } else if (seat.isAvailable === "selected") {
+                        return <button className="selected" key={index} onClick={(() => { disselectSeat(seat.name) })}>{seat.name}</button>
                     }
-                    else return <button className="unavailable" key={index} onClick={(()=>alert("Assento indisponível!!"))} >{seat.name}</button> 
+                    else return <button className="unavailable" key={index} onClick={(() => alert("Assento indisponível!!"))} >{seat.name}</button>
                 })}
                 {/* criar um component para os assentos Seats */}
                 <div className="seats-footer">
-                <button id="selected"></button>
-                <button id="avaible"></button>
-                <button id="not-avaible"></button>
-            </div>
+                    <button id="selected"></button>
+                    <button id="avaible"></button>
+                    <button id="not-avaible"></button>
+                </div>
                 <div className="seats-footer-text">
 
-                <p>selecionado</p>
-                <p>disponível</p>
-                <p>indisponível</p>
-            </div>
+                    <p>selecionado</p>
+                    <p>disponível</p>
+                    <p>indisponível</p>
+                </div>
 
                 <form onSubmit={saveTickets}>
 
@@ -128,21 +136,62 @@ export default function MovieSeats(props) {
                     ></input>
 
                     <div className="reserva">
-                        <button type="submit">Reservar assento(s)</button> 
+                        <button type="submit">Reservar assento(s)</button>
                     </div>
 
                 </form>
             </Style>
-            
-              {/* <Footer   
-              weekday = {info.day.weekday}
-              date = {info.name}
-              posterURL = {info.movie.posterURL}
-              title = {info.movie.title}
-              />   */}
+
+            {info ? <Footer weekday={info.day.weekday}
+                date={info.name}
+                posterURL={info.movie.posterURL}
+                title={info.movie.title}
+            /> : null}
+
         </Container>
-    )
+
+    )  } else return <Loading/>
+
+    // function footer({title,posterURL,weekday,date}) {
+    //     <StyledFooter>
+
+    //         <img src={posterURL} />
+    //         <div>
+    //             <span>{title}</span>
+    //             <span>{date}  {weekday}</span>
+    //         </div>
+    //     </StyledFooter>
+    // }
 }
+const StyledFooter = styled.div` 
+display: flex;
+background-color: #DFE6ED;
+border: 1px #9EADBA;
+box-shadow: 0 2px 4px 2px #9EADBA;
+height: 100px;
+width: 100%;
+justify-content: start;
+align-items: center;
+position: fixed;
+bottom: 0;
+
+div{
+    display: flex;
+    flex-direction: column;
+}
+
+img{
+    width: 42px;
+    height: 72px;
+    margin: 0 10px;
+}
+
+span{
+    font-size: 26px;
+    color: #293845;
+}
+
+`
 
 const Style = styled.div`
     display:flex;
@@ -235,3 +284,4 @@ input::placeholder{
 }
 
 `
+

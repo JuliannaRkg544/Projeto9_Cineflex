@@ -6,6 +6,7 @@ import { useState } from "react";
 import Footer from "./Footer";
 import styled from "styled-components"
 import Container from "./Container";
+import Loading from "./Loading";
 
 export default function Movie() {
     const { idMovie } = useParams()
@@ -23,7 +24,7 @@ export default function Movie() {
         ).catch(error => { console.log(error.response) })
     }, [])
 
-    return (
+ if(session.length>0)  {return (
         <Container>
             <p>Selecione o horário</p>
             {session.map((session, index) => {
@@ -36,7 +37,7 @@ export default function Movie() {
         <Footer title={movie.title} posterURL={movie.posterURL}/>
         </Container>
 
-    )
+    )}else {return <Loading/>}
 
 }
 
