@@ -96,6 +96,17 @@ export default function MovieSeats(props) {
                     else return <button className="unavailable" key={index} onClick={(()=>alert("Assento indisponível!!"))} >{seat.name}</button> 
                 })}
                 {/* criar um component para os assentos Seats */}
+                <div className="seats-footer">
+                <button id="selected"></button>
+                <button id="avaible"></button>
+                <button id="not-avaible"></button>
+            </div>
+                <div className="seats-footer-text">
+
+                <p>selecionado</p>
+                <p>disponível</p>
+                <p>indisponível</p>
+            </div>
 
                 <form onSubmit={saveTickets}>
 
@@ -172,6 +183,55 @@ form{
     border-radius: 3px;
     color: #fff;
 }
+.seats-footer-text{
+    display: flex;
+    width: 100%;
+    max-height: 50px;
+    justify-content: space-around;
+    align-items: center;
+}
+.seats-footer-text p{
+    font-size: 13px;
+    color: #4E5A65;
+    width: 65px;
+    height: 28px;
+}
+input::placeholder{
+    width: 327px;
+    height: 51px;
+    font-size: 18px;
+    font-style: italic;
+    color: #AFAFAF;
+}
 
+.seats-footer{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: space-around;
+
+}
+
+
+.seats-footer button{
+    border: 1px solid #808F9D;
+    border-radius: 12px ;
+    width: 25px;
+    height: 25px;
+
+}
+#avaible{
+    background-color:#C3CFD9 ;
+
+}
+
+#selected{
+    background-color:#8DD7CF ;
+
+}
+#not-avaible{
+
+    background-color: #FBE192;
+}
 
 `
