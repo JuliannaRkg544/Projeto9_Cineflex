@@ -23,6 +23,8 @@ justify-content: start;
 align-items: center;
 position: fixed;
 bottom: 0;
+left: 0;
+right: 0;
 
 div{
     display: flex;
